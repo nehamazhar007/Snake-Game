@@ -9,11 +9,14 @@ int main()
     InitWindow(width, height, "Snake Game");
     SetTargetFPS(60);
 
+    Color retroGreen = {155, 188, 15, 255};
+
     int currentScreen = WELCOME;
     int selectedOption = START_GAME;
     int gameOverOption = RESTART;
     int isPaused = 0;
     int score = 0;
+    int snakeDead = 0;
 
     while (!WindowShouldClose())
     {
@@ -24,8 +27,7 @@ int main()
                 currentScreen = MENU;
             }
         }
-
-        if (currentScreen == MENU)
+        else if (currentScreen == MENU)
         {
             if (IsKeyPressed(KEY_DOWN))
             {
@@ -51,6 +53,7 @@ int main()
                     currentScreen = GAME;
                     score = 0;
                     isPaused = 0;
+                    snakeDead = 0;
                 }
                 else if (selectedOption == INSTRUCTIONS_OPTION)
                 {
@@ -62,16 +65,14 @@ int main()
                 }
             }
         }
-
-        if (currentScreen == INSTRUCTIONS)
+        else if (currentScreen == INSTRUCTIONS)
         {
             if (IsKeyPressed(KEY_ENTER))
             {
                 currentScreen = MENU;
             }
         }
-
-        if (currentScreen == GAME)
+        else if (currentScreen == GAME)
         {
             if (IsKeyPressed(KEY_P))
             {
@@ -87,11 +88,24 @@ int main()
 
             if (isPaused == 0)
             {
-                score++;
+                if (IsKeyPressed(KEY_F))
+                {
+                    score++;
+                }
+
+                if (IsKeyPressed(KEY_O))
+                {
+                    snakeDead = 1;
+                }
+
+                if (snakeDead == 1)
+                {
+                    currentScreen = GAMEOVER;
+                    gameOverOption = RESTART;
+                }
             }
         }
-
-        if (currentScreen == GAMEOVER)
+        else if (currentScreen == GAMEOVER)
         {
             if (IsKeyPressed(KEY_DOWN))
             {
@@ -117,16 +131,20 @@ int main()
                     currentScreen = GAME;
                     score = 0;
                     isPaused = 0;
+                    snakeDead = 0;
+                    gameOverOption = RESTART;
                 }
                 else if (gameOverOption == MAIN_MENU)
                 {
                     currentScreen = MENU;
+                    selectedOption = START_GAME;
+                    gameOverOption = RESTART;
                 }
             }
         }
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(retroGreen);
 
         if (currentScreen == WELCOME)
         {
