@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "raylib.h"
 
 void DrawWelcomeScreen()
 {
@@ -62,12 +63,17 @@ void DrawInstructionsScreen()
     DrawText("Press ENTER to Go Back", 240, 440, 20, DARKGRAY);
 }
 
-void DrawGameScreen(int score, int isPaused)
+void DrawGameScreen(int score, int isPaused, Snake *snake, Food *food)
 {
     DrawRectangle(0, 0, 800, 50, DARKGREEN);
     DrawText(TextFormat("Score: %d", score), 20, 12, 25, WHITE);
     DrawText("Press P to Pause", 550, 12, 20, WHITE);
-    DrawRectangleLines(10, 60, 780, 530, DARKGREEN);
+    // Issue 10 + 31: Border ab game area ke barabar hai
+    DrawRectangleLines(BOARD_X, BOARD_Y, GRID_COLS * CELL_SIZE, GRID_ROWS * CELL_SIZE, DARKGREEN);
+
+    // Issue 29 + 30: Snake aur Food border ke andar draw honge
+    DrawFood(food);
+    DrawSnake(snake);
 
     if (isPaused == 1)
     {
